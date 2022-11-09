@@ -23,49 +23,45 @@ def f(x):
     y[0] = 0
     y[1] = x
     i = 0
-    while (i < n - 1):
+    for i in range(n - 1):
         xi = h * i
         y = rungeKutta(y, xi, h)
-        i += 1
     return y[0] - 1
 
 
 def rungeKutta(y,  t,  dt):
     # Method to complete one Runge-Kutta step.
-    l = len(y)
-    c1 = [0.0] * (l)
-    c2 = [0.0] * (l)
-    c3 = [0.0] * (l)
-    c4 = [0.0] * (l)
+    n = len(y)
+    c1 = [0.0] * (n)
+    c2 = [0.0] * (n)
+    c3 = [0.0] * (n)
+    c4 = [0.0] * (n)
     c1 = g(y, t)
     i = 0
-    while (i < l):
+    for i in range(n):
         c2[i] = y[i] + dt * c1[i] / 2
-        i += 1
     c2 = g(c2, t + dt / 2)
     i = 0
-    while (i < l):
+    for i in range(n):
         c3[i] = y[i] + dt * c2[i] / 2
-        i += 1
     c3 = g(c3, t + dt / 2)
     i = 0
-    while (i < l):
+    for i in range(n):
         c4[i] = y[i] + dt * c3[i]
-        i += 1
     c4 = g(c4, t + dt)
     i = 0
-    while (i < l):
+    for i in range(n):
         c1[i] = y[i] + dt * (c1[i] + 2 * (c2[i] + c3[i]) + c4[i]) / 6
-        i += 1
     return c1
 # Method to provide the generalized velocity vector.
 
 
 def g(y,  t):
+    lamb = 3
     k = len(y)
     v = [0.0] * (k)
     v[0] = y[1]
-    v[1] = -math.pi * math.pi * (y[0] + 1) / 4
+    v[1] = -lamb * (y[0])
     return v
 
 
@@ -80,20 +76,20 @@ if __name__ == "__main__":
     y1 = [0.0] * (n + 1)
     y2 = [0.0] * (n + 1)
     y = [0.0] * (2)
+
     # Search the proper solution of the equation
     y1[0] = 0
     y[0] = 0
     y2[0] = secant(ni, delta, alpha0, dalpha)
     y[1] = y2[0]
     i = 0
-    while (i < n):
+    for i in range(n):
         x = h * i
         y = rungeKutta(y, x, h)
         y1[i + 1] = y[0]
         y2[i + 1] = y[1]
-        i += 1
+
     # Output the result in every m points
     i = 0
-    while (i <= n):
-        print(y1[i])
-        i += m
+    for i in range(0, n+1, m):
+        print(m*i, y1[i], sep=",")
